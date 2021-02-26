@@ -1,5 +1,11 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+
+const messageEdit = () => toast.info('Todo Changed!', {
+  position: 'bottom-right',
+  autoClose: 3000,
+});
 
 const ModalComponent = ({
   show, toggle, title, children, onSubmit,
@@ -13,9 +19,10 @@ const ModalComponent = ({
       <Button variant="secondary" onClick={toggle}>
         Close
       </Button>
-      <Button variant="primary" onClick={onSubmit}>
+      <Button variant="primary" onClick={() => { messageEdit(); onSubmit(); }}>
         Save Changes
       </Button>
+      <ToastContainer />
     </Modal.Footer>
   </Modal>
 );

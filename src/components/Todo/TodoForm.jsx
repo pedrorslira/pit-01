@@ -2,30 +2,24 @@ import React, { useState } from 'react';
 import {
   Row, Form, Col, Button,
 } from 'react-bootstrap';
-import axios from '../../utils/api';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function TodoForm({ todos, setTodos }) {
   const [todo, setTodo] = useState('');
 
-  const handleSubmit = async (event) => {
+  const messageSuccess = () => toast.success('Todo Created!', {
+    position: 'bottom-right',
+    autoClose: 3000,
+  });
+
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!todo.trim()) {
-      return alert('Todo vazio');
-    }
-
-    try {
-      const response = await axios.post('/todos', { isDone: false, name: todo });
-
-      setTodos([
-        ...todos,
-        response.data,
-      ]);
-
-      setTodo('');
-    } catch (error) {
-      console.log(error.message);
-    }
+    setTodos([
+      ...todos,
+      { name: todo, isDone: false, id: new Date().getTime() },
+    ]);
+    setTodo('');
   };
 
   const onChange = ({ target: { value } }) => {
@@ -38,6 +32,7 @@ export default function TodoForm({ todos, setTodos }) {
         <Col lg={9} xl={9}>
           <Form.Group>
             <Form.Control
+              required
               value={todo}
               onChange={onChange}
               placeholder="Insert your daily activity"
@@ -45,7 +40,8 @@ export default function TodoForm({ todos, setTodos }) {
           </Form.Group>
         </Col>
         <Col>
-          <Button disabled={!todo.trim()} type="submit">Add Todo</Button>
+          <Button disabled={!todo.trim()} type="submit" onClick={messageSuccess}>Add Task</Button>
+          <ToastContainer />
         </Col>
       </Row>
     </Form>

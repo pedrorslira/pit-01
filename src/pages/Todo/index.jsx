@@ -1,37 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Page from '../../components/Page';
 import TodoForm from '../../components/Todo/TodoForm';
 import TodoList from '../../components/Todo/TodoList';
 
-import axios from '../../utils/api';
-
 export default function index() {
   const [todos, setTodos] = useState([]);
 
-  const fetchData = async () => {
-    const response = await axios.get('/todos');
-    setTodos(response.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
-    <Page title="Todo App">
+    <Page title="To-Do List">
+
       <TodoForm todos={todos} setTodos={setTodos} />
       <TodoList todos={todos} setTodos={setTodos} />
 
       <button
         type="button"
-        className="btn btn-info"
+        disabled={!todos.length}
+        className="btn btn-primary"
         onClick={() => setTodos([])}
       >
-        Clear Todos
+        Clear All
       </button>
 
-      <p>{`Todo count: ${todos.length}`}</p>
+      <p>{`Counter: ${todos.length}`}</p>
     </Page>
   );
 }
